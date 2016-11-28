@@ -1,4 +1,17 @@
+# Contains classes used as data objects. That is they represent sets of discrete data in the system
+# These classes do not depend onto any other classes in the system
+
+
 class Generation(object):
+    # __init__ methods are used to initialise instance of classes, here we can see that a generation requires
+    # a count of juveniles, adults, seniles as well as the disease rate that applied for the generation
+    # once a model has been run it will contain multiple instances of the generation class.
+    # during initialisation we pass each parameter to a field of the class.
+    # so we can do:
+    # g = Generation(1, 2, 3, 4)
+    # and then access each value as:
+    # juveniles = g.juveniles
+    # juveniles_in_thousands = g.juveniles_in_thousands
     def __init__(self, juveniles: int, adults: int, seniles: int, disease_rate: int):
         self.juveniles = juveniles
         self.adults = adults
@@ -8,6 +21,11 @@ class Generation(object):
         self.adults_in_thousands = Generation.format_in_thousands(adults)
         self.seniles_in_thousands = Generation.format_in_thousands(seniles)
 
+    # this method doesn't require any of the state of an instance of the class - so it's defined as a class method
+    # we access this method through the class name - so if we wanted to use it in code external to this class, we
+    # would call as:
+    # f = Generation.format_in_thousands(1000)
+    # and f would now contain 1.
     @classmethod
     def format_in_thousands(cls, value):
         return value / 1000
@@ -15,6 +33,11 @@ class Generation(object):
 
 class ModelRunOptions(object):
 
+    # this class is holding the configuration information that we use to run the model
+    # you'll notice these classes have no particular behaviour associated with them. Sometimes we require to have simple
+    # data objects - these are (typically) called DTOs (Data Transportation Objects) or (dependent on language):
+    # POPOs (Plain Old Python Objects) / POCO (Plain Old CLR Objects) / POJO (Plain Old Java Object). That is something
+    # with no particular behaviour.
     def __init__(self, starting_juveniles: int, starting_adults: int, starting_seniles: int,
                  generations: int, juvenile_survival_rate: float, adult_survival_rate: float,
                  senile_survival_rate: float, adult_birth_rate: float, disease_trigger: int):
@@ -29,57 +52,3 @@ class ModelRunOptions(object):
         self.disease_trigger = disease_trigger
 
 
-class ModelRunOptionsValidation(object):
-    def __init__(self, min_generations: int, max_generations: int):
-        self.min_generations = min_generations
-        self.max_generations = max_generations
-
-    def validate_starting_juveniles(self, value):
-        if value < 0:
-            return "Must be 0 or greater"
-        return None
-
-    def validate_starting_adults(self, value):
-        if value < 0:
-            return "Must be 0 or greater"
-        return None
-
-    def validate_starting_seniles(self, value):
-        if value < 0:
-            return "Must be 0 or greater"
-        return None
-
-    def validate_generations(self, value):
-        if value < self.min_generations:
-            return "Must be equal to or greater than {}".format(self.min_generations)
-        if value > self.max_generations:
-            return "Must be equal to or less than {}".format(self.max_generations)
-        return None
-
-    def validate_disease_trigger(self, value):
-        if value <= 0:
-            return "Must be greater than 0"
-        return None
-
-    def validate_adult_birth_rate(self, value):
-        if value < 0:
-            return "Must be 0 or greater"
-        return None
-
-    def validate_juvenile_survival_rate(self, value):
-        if value < 0:
-            return "Must be 0 or greater"
-        if value > 1:
-            return "Must be 1 or less"
-
-    def validate_adult_survival_rate(self, value):
-        if value < 0:
-            return "Must be 0 or greater"
-        if value > 1:
-            return "Must be 1 or less"
-
-    def validate_senile_survival_rate(self, value):
-        if value < 0:
-            return "Must be 0 or greater"
-        if value > 1:
-            return "Must be 1 or less"

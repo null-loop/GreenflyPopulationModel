@@ -327,7 +327,7 @@ class Console(object):
 
     @classmethod
     def collect_number(cls, label, validation, valid_characters, parser, number_label):
-        # collects a series of valid keypresses (expressed in valid_characters),
+        # collects a series of valid key presses (expressed in valid_characters),
         # when enter is pressed it passes it through the parser method,
         # if a valid value (determined by NOT throwing an error),
         # we pass it to the validation method, if that passes we can return the number

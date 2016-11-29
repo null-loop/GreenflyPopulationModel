@@ -84,27 +84,48 @@ class Population(object):
 
 class PopulationModel(object):
     def __init__(self, options: ModelRunOptions):
+        # Initialising a new population model - all we need is an instance of the ModelRunOptions class
+        # this contains all the information we need to run the model
+
+        # the disease rate is calculated at random - using the pseudo random number generator
+        # pseudo random number generators AREN'T really random - they're (like all things in a computer)
+        # deterministic - which means they're predictable. That predictability is based on a "seed" value
+        # Given the same seed value they will produce the same sequence of random numbers.
+        # By calling random.seed() as we do below a seed value is calculated based on the current
+        # date / time.
         random.seed()
+        # stash away the options in a field
         self.__options = options
+        # create a new population object using the starting populations on the options
         self.__population = Population(options.starting_juveniles, options.starting_adults, options.starting_seniles)
+        # create list of generations populated with the first generation from the __population object.
         self.__generations = [self.__population.create_generation_from_current_state(0)]
 
     def get_generations_count(self):
+        # simply gets the count of generations in the model.
         return len(self.__generations)
 
     def get_generation(self, index: int):
+        # gets the generation object at the specified index
         return self.__generations[index]
 
     def get_generations(self):
+        # gets all the generations
         return self.__generations
 
     def run_all_generations(self):
+        # runs the model for number of generations specified in __options
         for generation in range(0, self.__options.generations):
+            # calculate a disease rate to apply for the current generation
             disease_rate = self.calculate_disease_rate()
+            # update the population to the next generation and get the result object
             next_generation = self.__population.update_to_next_generation(self.__options, disease_rate)
+            # add the generation object we just got to the list of generations
             self.__generations.append(next_generation)
 
     def calculate_disease_rate(self):
+        # using the total population determine if we've got disease - by comparing to the trigger
+        # value in the options
         total_population = self.__population.get_total_population()
         if total_population >= self.__options.disease_trigger:
             return PopulationModel.random_disease_rate()
@@ -117,8 +138,14 @@ class PopulationModel(object):
 
 class ModelRunOptionsValidation(object):
     def __init__(self, min_generations: int, max_generations: int):
+        # we're only taking two parameters here for our validation - these are the only
+        # values that are configurable - we COULD hard code them - but good code inverts
+        # control - there's no natural limits for the min / max generations so we're passing them
+        # in as parameters
         self.min_generations = min_generations
         self.max_generations = max_generations
+
+    # The code below should be self explanatory...
 
     def validate_starting_juveniles(self, value):
         if value < 0:

@@ -25,7 +25,7 @@ def main():
     # notice how when we're creating the MenuOptions below we reference the methods
     # each option will invoke when selected. We don't reference them directly as invocations:
     # i.e. NOT configure_options()
-    # By rather by just referencing there names
+    # But rather by just referencing their names
     # Invocation of the method is performed by the option when it's selected.
     __menu = IO.Menu("Greenfly Population Model Program", [
         IO.MenuOption("1", "Set starting options", configure_options),

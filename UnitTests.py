@@ -1,4 +1,5 @@
 from unittest import TestCase
+import unittest
 from Data import ModelRunOptions
 from Model import ModelRunOptionsValidation
 from Model import PopulationModel
@@ -346,3 +347,6 @@ class PopulationTests(TestCase):
         population = Population(0, 0, seniles)
         surviving_seniles = population.calculate_surviving_seniles(survival_rate, disease_rate)
         self.assertEqual(surviving_seniles, expected_seniles)
+
+if __name__ == '__main__':
+    unittest.main()

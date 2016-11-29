@@ -4,7 +4,11 @@ from enum import Enum
 import random
 
 
+# this class is a simple definition of values - AKA - an Enumerator (shortened to Enum)
+# notice how the class is inheriting from the Enum class in the enum model - the name in brackets
 class LifecycleStage(Enum):
+    # We're defining static values for each of our lifecycle stages - this just
+    # makes it clearer later on when we're accessing some methods
     Juvenile = 0,
     Adult = 1,
     Senile = 2
@@ -12,16 +16,19 @@ class LifecycleStage(Enum):
 
 class Population(object):
 
-    # Initialisation of the population - we take the
     def __init__(self, juveniles: int, adults: int, seniles: int):
+        # Initialisation of the population - we take the starting populations and set them as field values
         self.__juveniles = juveniles
         self.__adults = adults
         self.__seniles = seniles
 
     def create_generation_from_current_state(self, disease_rate: int):
+        # creates a new Data.Generation object from the current values of the population
         return Generation(self.__juveniles, self.__adults, self.__seniles, disease_rate)
 
     def get_count(self, stage: LifecycleStage):
+        # gets one of the current counts of population - we take a LifecycleStage as a parameter
+        # and then decide which field value to return
         if stage == LifecycleStage.Juvenile.value:
             return self.__juveniles
         if stage == LifecycleStage.Adult.value:
@@ -30,30 +37,48 @@ class Population(object):
             return self.__seniles
 
     def update_to_next_generation(self, options: ModelRunOptions, disease_rate: int):
+        # perform an update of the current population values based on our models options (contained in the
+        # options parameter) - by passing it as a parameter we can control the inputs when performing testing
+
+        # calculate the number of juveniles born
         juveniles_born = self.calculate_born_juveniles(options.adult_birth_rate)
+        # calculate the number of juveniles surviving to become adults - passing the disease_rate
         surviving_juveniles = self.calculate_surviving_juveniles(options.juvenile_survival_rate, disease_rate)
+        # calculate the number of adults surviving to become seniles
         surviving_adults = self.calculate_surviving_adults(options.adult_survival_rate)
+        # calculate the number of seniles that are surviving as seniles - passing the disease_rate
         surviving_seniles = self.calculate_surviving_seniles(options.senile_survival_rate, disease_rate)
 
+        # set the new senile population
         self.__seniles = surviving_seniles + surviving_adults
+        # set the new adult population
         self.__adults = surviving_juveniles
+        # set the new juveniles
         self.__juveniles = juveniles_born
 
+        # create and return a new generation instance representing the current state
         return self.create_generation_from_current_state(disease_rate)
 
     def calculate_born_juveniles(self, adult_birth_rate: float):
+        # calculate how many juveniles are born based on the number of adults and the adult birth rate
         return int(self.__adults * adult_birth_rate)
 
     def calculate_surviving_juveniles(self, juvenile_survival_rate: float, disease_rate: float):
+        # calculate how many juveniles survive based on the number of juveniles, their survival rate
+        # and the disease rate
         return int(self.__juveniles * juvenile_survival_rate * (100 - disease_rate) / 100)
 
     def calculate_surviving_adults(self, adult_survival_rate: float):
+        # calculate how many adults survive based on the number of adults and their survival rate
         return int(self.__adults * adult_survival_rate)
 
     def calculate_surviving_seniles(self, senile_survival_rate: float, disease_rate: float):
+        # calculate how many seniles survive based on the number of seniles, their survival rate
+        # and the disease rate
         return int(self.__seniles * senile_survival_rate * (100 - disease_rate) / 100)
 
     def get_total_population(self):
+        # helper method to get the total population (used in testing)
         return self.__juveniles + self.__adults + self.__seniles
 
 

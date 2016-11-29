@@ -2,6 +2,6 @@ language: python
 python:
   - "3.5"
 # command to install dependencies
-install: "pip install curses"
+install: "pip install UniCurses"
 # command to run tests
 script: Tests/UnitTests.py

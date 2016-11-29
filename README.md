@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/null-loop/GreenflyPopulationModel.svg?branch=master)](https://travis-ci.org/null-loop/GreenflyPopulationModel)
 
-# GreenflyPopulationModel
-Python implementation of a Greenfly Population Model
+# Greenfly Population Model
+Python implementation of a Greenfly Population Model. Produced to show my daughter a set of good practices in software development.
 
 ### Python files
 

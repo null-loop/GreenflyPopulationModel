@@ -189,7 +189,7 @@ class Console(object):
 
     @classmethod
     def print_error(cls, text):
-        # prints an error message in a common way - saves us from having to redo this everything
+        # prints an error message in a common way - saves us from having to redo this every time
         # we encounter an error condition in our main code.
         Console.clear()
         Console.print_line_at(1, 4, "ERROR: " + text, _curses.COLOR_RED)

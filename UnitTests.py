@@ -45,6 +45,9 @@ class ModelRunOptionsTests(TestCase):
 
 
 class ModelRunOptionsValidationTests(TestCase):
+    def test_deliberate_fail(self):
+        self.assertEqual(1, 10)
+
     def test_initialisation_values(self):
         validation = ModelRunOptionsValidation(1, 100)
         self.assertEqual(1, validation.min_generations)

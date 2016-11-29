@@ -20,6 +20,7 @@ class Generation(object):
         self.juveniles_in_thousands = Generation.format_in_thousands(juveniles)
         self.adults_in_thousands = Generation.format_in_thousands(adults)
         self.seniles_in_thousands = Generation.format_in_thousands(seniles)
+        self.total_population_in_thousands = Generation.format_in_thousands(juveniles + adults + seniles)
 
     # this method doesn't require any of the state of an instance of the class - so it's defined as a class method
     # we access this method through the class name - so if we wanted to use it in code external to this class, we

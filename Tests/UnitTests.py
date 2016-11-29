@@ -1,7 +1,7 @@
 from unittest import TestCase
 from Data import ModelRunOptions
-from Data import ModelRunOptionsValidation
-from Model import PopulationModel, ModelRunOptionsValidation
+from Model import ModelRunOptionsValidation
+from Model import PopulationModel
 from Model import Population
 from Model import LifecycleStage
 from Model import Generation

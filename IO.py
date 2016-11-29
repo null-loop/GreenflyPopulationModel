@@ -214,20 +214,20 @@ class Console(object):
         # This method collects all the options from the user and performs validation using the
         # passed in validation parameter
 
-        starting_juveniles = Console.collect_integer("Enter starting juvenile population",
-                                                     validation.validate_starting_juveniles)
+        starting_juveniles = Console.collect_integer("Enter starting juvenile population (1000s)",
+                                                     validation.validate_starting_juveniles) * 1000
 
-        starting_adults = Console.collect_integer("Enter starting adult population",
-                                                  validation.validate_starting_adults)
+        starting_adults = Console.collect_integer("Enter starting adult population (1000s)",
+                                                  validation.validate_starting_adults) * 1000
 
-        starting_seniles = Console.collect_integer("Enter starting senile population",
-                                                   validation.validate_starting_seniles)
+        starting_seniles = Console.collect_integer("Enter starting senile population (1000s)",
+                                                   validation.validate_starting_seniles) * 1000
 
         generations = Console.collect_integer("Enter number of generations",
                                               validation.validate_generations)
 
-        disease_trigger = Console.collect_integer("Enter total population to trigger disease",
-                                                  validation.validate_disease_trigger)
+        disease_trigger = Console.collect_integer("Enter total population to trigger disease (1000s)",
+                                                  validation.validate_disease_trigger) * 1000
 
         adult_birth_rate = Console.collect_float("Enter adult birth rate",
                                                  validation.validate_adult_birth_rate)
@@ -376,8 +376,8 @@ class Console(object):
     def print_generations(cls, model):
         # prints all the generations from the model parameter
         col_offset = 3
-        cols = 5
-        col_width = 20
+        cols = 6
+        col_width = 18
 
         Console.clear()
 
@@ -390,7 +390,8 @@ class Console(object):
         Console.print_line_at(5, (2 * col_width) + col_offset, "| Adults", _curses.COLOR_WHITE)
         Console.print_line_at(5, (3 * col_width) + col_offset, "| Seniles", _curses.COLOR_WHITE)
         Console.print_line_at(5, (4 * col_width) + col_offset, "| Total", _curses.COLOR_WHITE)
-        Console.print_line_at(5, (5 * col_width) + col_offset, "|", _curses.COLOR_WHITE)
+        Console.print_line_at(5, (5 * col_width) + col_offset, "| Disease", _curses.COLOR_WHITE)
+        Console.print_line_at(5, (6 * col_width) + col_offset, "|", _curses.COLOR_WHITE)
         Console.print_line_at(6, col_offset, "-" * ((cols * col_width) + 1), _curses.COLOR_WHITE)
 
         start_line = 7
@@ -398,12 +399,13 @@ class Console(object):
             gen = model.get_generation(g)
             line = start_line + g
             Console.print_line_at(line, col_offset, "| {}".format(g), _curses.COLOR_WHITE)
-            Console.print_line_at(line, col_width + col_offset, "| {}".format(gen.juveniles), _curses.COLOR_WHITE)
-            Console.print_line_at(line, (2 * col_width) + col_offset, "| {}".format(gen.adults), _curses.COLOR_WHITE)
-            Console.print_line_at(line, (3 * col_width) + col_offset, "| {}".format(gen.seniles), _curses.COLOR_WHITE)
+            Console.print_line_at(line, col_width + col_offset, "| {}".format(gen.juveniles_in_thousands), _curses.COLOR_WHITE)
+            Console.print_line_at(line, (2 * col_width) + col_offset, "| {}".format(gen.adults_in_thousands), _curses.COLOR_WHITE)
+            Console.print_line_at(line, (3 * col_width) + col_offset, "| {}".format(gen.seniles_in_thousands), _curses.COLOR_WHITE)
             Console.print_line_at(line, (4 * col_width) + col_offset,
-                                  "| {}".format(gen.juveniles + gen.adults + gen.seniles), _curses.COLOR_WHITE)
-            Console.print_line_at(line, (5 * col_width) + col_offset, "|", _curses.COLOR_WHITE)
+                                  "| {}".format(gen.total_population_in_thousands), _curses.COLOR_WHITE)
+            Console.print_line_at(line, (5 * col_width) + col_offset, "| {}".format(gen.disease_rate), _curses.COLOR_WHITE)
+            Console.print_line_at(line, (6 * col_width) + col_offset, "|", _curses.COLOR_WHITE)
 
         Console.print_line_at(start_line + model.get_generations_count(),
                               col_offset, "-" * ((cols * col_width) + 1), _curses.COLOR_WHITE)
